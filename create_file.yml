@@ -5,7 +5,7 @@
   tasks:
     - name: Create directory
       file:
-        path: "{{ test_dir | default('/tmp/qa_test_dir') }}"
+        path: "{{ test_dir | default('/tmp/ba_test_dir') }}"
         state: directory
         mode: '0755'
       register: dir_creation
