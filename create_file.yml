@@ -1,0 +1,8 @@
+- name: Create a text file in the home directory
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Create hello.txt with custom content
+      copy:
+        dest: "{{ lookup('env','HOME') }}/hello.txt"
+        content: "This file was created by Ansible!"
