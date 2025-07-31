@@ -1,8 +1,33 @@
-- name: Create a text file in the home directory
+- name: Simple Demo Playbook
   hosts: localhost
-  become: false
+  connection: local
+  gather_facts: yes
   tasks:
-    - name: Create hello.txt with custom content
+    - name: Display system information
+      debug:
+        msg: "Running on {{ ansible_hostname }} with {{ ansible_distribution }} {{ ansible_distribution_version }}"
+    
+    - name: Create a test directory in /tmp
+      file:
+        path: /home/ubuntu/ansible_demo_test
+        state: directory
+        mode: '0755'
+    
+    - name: Create a test file
       copy:
-        dest: "{{ lookup('env','HOME') }}/hello.txt"
-        content: "This file was created by Ansible!"
+        content: |
+          This is a test file created by ansible-interpreter demo
+          Timestamp: {{ ansible_date_time.iso8601 }}
+          Host: {{ ansible_hostname }}
+        dest: /home/ubuntu/ansible_demo_test/akshay_file.txt
+        mode: '0644'
+    
+    - name: Verify file was created
+      stat:
+        path: /home/ubuntu/ansible_demo_test/akshay_file.txt
+      register: akshay_file_stat
+    
+    - name: Display file information
+      debug:
+        msg: "Demo file created successfully at {{ akshay_file_stat.stat.path }}, size: {{ akshay_file_stat.stat.size }} bytes"
+      when: akshay_file_stat.stat.exists
