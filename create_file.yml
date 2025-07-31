@@ -1,3 +1,4 @@
+---
 - name: Simple Demo Playbook
   hosts: localhost
   connection: local
@@ -9,7 +10,7 @@
     
     - name: Create a test directory in /tmp
       file:
-        path: /home/ubuntu/ansible_demo_test
+        path: /tmp/ansible_demo_test
         state: directory
         mode: '0755'
     
@@ -19,15 +20,15 @@
           This is a test file created by ansible-interpreter demo
           Timestamp: {{ ansible_date_time.iso8601 }}
           Host: {{ ansible_hostname }}
-        dest: /home/ubuntu/ansible_demo_test/akshay_file.txt
+        dest: /tmp/ansible_demo_test/demo_file.txt
         mode: '0644'
     
     - name: Verify file was created
       stat:
-        path: /home/ubuntu/ansible_demo_test/akshay_file.txt
-      register: akshay_file_stat
+        path: /tmp/ansible_demo_test/demo_file.txt
+      register: demo_file_stat
     
     - name: Display file information
       debug:
-        msg: "Demo file created successfully at {{ akshay_file_stat.stat.path }}, size: {{ akshay_file_stat.stat.size }} bytes"
-      when: akshay_file_stat.stat.exists
+        msg: "Demo file created successfully at {{ demo_file_stat.stat.path }}, size: {{ demo_file_stat.stat.size }} bytes"
+      when: demo_file_stat.stat.exists
