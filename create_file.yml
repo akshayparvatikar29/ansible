@@ -1,15 +1,15 @@
 ---
-- name: Simple Demo Playbook
+- name: Create directory playbook
   hosts: localhost
-  connection: local
   gather_facts: yes
   tasks:
-    - name: Display system information
-      debug:
-        msg: "Running on {{ ansible_hostname }} with {{ ansible_distribution }} {{ ansible_distribution_version }}"
-    
-    - name: Create a test directory in /tmp
+    - name: Create directory
       file:
-        path: /tmp/akshay_demo_test
+        path: "{{ test_dir | default('/tmp/qa_test_dir') }}"
         state: directory
         mode: '0755'
+      register: dir_creation
+
+    - name: Display directory creation result
+      debug:
+        var: dir_creation
